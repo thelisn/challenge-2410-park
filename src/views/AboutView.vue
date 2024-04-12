@@ -10,7 +10,7 @@ const onTextAreaKeyPress = (e) => {
     e.preventDefault();
 
     const newEvent = new Event("submit", { cancelable: true });
-    event.target.form.dispatchEvent(newEvent);
+    e.target.form.dispatchEvent(newEvent);
   }
 };
 
