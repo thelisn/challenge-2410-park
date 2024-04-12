@@ -13,6 +13,8 @@ onMounted(() => {
 const onClickSearch = () => {
   const filterList = storageList.value.filter((v) => v?.title.includes(searchValue.value));
   list.value = filterList;
+
+  searchValue.value = "";
 };
 </script>
 
@@ -56,6 +58,10 @@ const onClickSearch = () => {
       display: flex;
       gap: 10px;
       padding-block: 10px;
+
+      & p {
+        white-space: pre-wrap;
+      }
     }
   }
 

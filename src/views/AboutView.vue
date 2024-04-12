@@ -5,6 +5,15 @@ import router from "@/router";
 const inputValue = ref("");
 const textAreaValue = ref("");
 
+const onTextAreaKeyPress = (e) => {
+  if (e.which === 13 && !e.shiftKey) {
+    e.preventDefault();
+
+    const newEvent = new Event("submit", { cancelable: true });
+    event.target.form.dispatchEvent(newEvent);
+  }
+};
+
 const onSubmit = () => {
   const koDtf = new Intl.DateTimeFormat("ko", { dateStyle: "long" });
   const date = koDtf.format(new Date());
@@ -22,7 +31,12 @@ const onSubmit = () => {
 <template>
   <form class="form" @submit.prevent="onSubmit">
     <input v-model="inputValue" type="text" placeholder="제목을 입력하세요" />
-    <textarea v-model="textAreaValue"></textarea>
+    <textarea
+      v-model="textAreaValue"
+      autocomplete="off"
+      type="text"
+      @keypress="onTextAreaKeyPress"
+    ></textarea>
 
     <button @click="onSubmit" type="button">저장</button>
   </form>
