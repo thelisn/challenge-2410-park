@@ -1,15 +1,17 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, computed } from "vue";
 
 const searchValue = ref("");
 const list = ref([]);
 
+const storageList = computed(() => JSON.parse(localStorage.getItem("list")));
+
+onMounted(() => {
+  list.value = storageList.value;
+});
+
 const onClickSearch = () => {
-  const _list = JSON.parse(localStorage.getItem("list"));
-  const filterList = _list.filter((v) => v?.title.includes(searchValue.value));
-
-  console.log(filterList);
-
+  const filterList = storageList.value.filter((v) => v?.title.includes(searchValue.value));
   list.value = filterList;
 };
 </script>
