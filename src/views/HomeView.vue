@@ -1,4 +1,7 @@
 <script setup>
+import HomeEmpty from "@/components/home/HomeEmpty.vue";
+import HomeList from "@/components/home/HomeList.vue";
+
 import { ref, onMounted, computed } from "vue";
 
 const searchValue = ref("");
@@ -26,17 +29,7 @@ const onClickSearch = () => {
     </form>
 
     <div class="content">
-      <ul v-if="!!list.length" class="list">
-        <li v-for="({ date, title, content }, index) of list" :key="index">
-          <p>{{ date }}</p>
-          <p>{{ title }}</p>
-          <p>{{ content }}</p>
-        </li>
-      </ul>
-
-      <div v-else class="empty">
-        <p>없어요</p>
-      </div>
+      <component :is="!!list.length ? HomeList : HomeEmpty" :lists="list" />
     </div>
   </div>
 </template>
@@ -50,25 +43,5 @@ const onClickSearch = () => {
   margin-bottom: 40px;
   padding: 20px;
   border-bottom: 1px solid red;
-}
-
-.content {
-  & .list {
-    & li {
-      display: flex;
-      gap: 10px;
-      padding-block: 10px;
-
-      & p {
-        white-space: pre-wrap;
-      }
-    }
-  }
-
-  & .empty {
-    text-align: center;
-    color: #868a93;
-    font-size: 14px;
-  }
 }
 </style>
