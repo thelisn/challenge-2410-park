@@ -20,7 +20,7 @@ const onSubmit = () => {
 </script>
 
 <template>
-  <form @submit.prevent="onSubmit">
+  <form class="form" @submit.prevent="onSubmit">
     <input v-model="inputValue" type="text" placeholder="제목을 입력하세요" />
     <textarea v-model="textAreaValue"></textarea>
 
@@ -28,4 +28,14 @@ const onSubmit = () => {
   </form>
 </template>
 
-<style></style>
+<style scoped>
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 40px;
+  padding: 20px;
+}
+</style>
