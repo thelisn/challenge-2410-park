@@ -14,8 +14,10 @@ onMounted(() => {
 });
 
 const onClickSearch = () => {
-  const filterList = storageList.value.filter((v) => v?.title.includes(searchValue.value));
-  list.value = filterList;
+  if (storageList.value) {
+    const filterList = storageList.value.filter((v) => v?.title.includes(searchValue.value));
+    list.value = filterList;
+  }
 
   searchValue.value = "";
 };
@@ -29,7 +31,7 @@ const onClickSearch = () => {
     </form>
 
     <div class="content">
-      <component :is="!!list.length ? HomeList : HomeEmpty" :lists="list" />
+      <component :is="!!list?.length ? HomeList : HomeEmpty" :lists="list" />
     </div>
   </div>
 </template>
