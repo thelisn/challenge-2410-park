@@ -1,5 +1,5 @@
 # challenge-2410-park
-## 로컬 구동 방법
+## 로컬 구동 방법
 
 1. ** git clone **
    ```bash
@@ -17,7 +17,7 @@
    VITE_SUPABASE_ANON_KEY=<your-anon-key>
    ```
    env 값은 Supabase에 따로 테이블을 만들고, supabase.from("table") >  설정하신 테이블 이름으로 "table" 부분 바꾸시면 됩니다.
-   [참고 주소](https://supabase.com/docs/guides/getting-started/quickstarts/vue)
+   [상세방법](https://supabase.com/docs/guides/getting-started/quickstarts/vue)
 
 4. ** npm run dev **
    ```bash
