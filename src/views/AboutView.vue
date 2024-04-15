@@ -1,9 +1,13 @@
 <script setup>
 import { ref } from "vue";
+import { supabase } from "@/lib/supabaseClient";
 import router from "@/router";
 
 const inputValue = ref("");
 const textAreaValue = ref("");
+const endDateValue = ref(null);
+
+const errorValue = ref("");
 
 const onTextAreaKeyPress = (e) => {
   if (e.which === 13 && !e.shiftKey) {
@@ -14,32 +18,28 @@ const onTextAreaKeyPress = (e) => {
   }
 };
 
-const onSubmit = () => {
-  const koDtf = new Intl.DateTimeFormat("ko", { dateStyle: "long" });
-  const date = koDtf.format(new Date());
-  const obj = { date, title: inputValue.value, content: textAreaValue.value };
-  const list = JSON.parse(localStorage.getItem("list")) ?? [];
+const onSubmit = async () => {
+  const obj = { title: inputValue.value, content: textAreaValue.value, end_date: endDateValue.value };
+  const { error } = await supabase.from("table").insert(obj);
 
-  list.push(obj);
-
-  localStorage.setItem("list", JSON.stringify(list));
-
-  router.push("/");
+  if (error) {
+    errorValue.value = error;
+  } else {
+    router.push("/");
+  }
 };
 </script>
 
 <template>
   <form class="form" @submit.prevent="onSubmit">
     <input v-model="inputValue" type="text" placeholder="제목을 입력하세요" />
-    <textarea
-      v-model="textAreaValue"
-      autocomplete="off"
-      type="text"
-      @keypress="onTextAreaKeyPress"
-    ></textarea>
+    <input v-model="endDateValue" type="date" />
+    <textarea v-model="textAreaValue" autocomplete="off" type="text" @keypress="onTextAreaKeyPress"></textarea>
 
     <button @click="onSubmit" type="button">저장</button>
   </form>
+
+  <p class="error" v-show="errorValue">{{ errorValue }}</p>
 </template>
 
 <style scoped>
@@ -49,7 +49,11 @@ const onSubmit = () => {
   justify-content: center;
   flex-direction: column;
   gap: 20px;
-  margin-bottom: 40px;
   padding: 20px;
+}
+
+.error {
+  color: #ff6060;
+  font-size: 14px;
 }
 </style>

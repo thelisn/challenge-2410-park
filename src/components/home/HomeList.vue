@@ -4,8 +4,8 @@ defineProps(["lists"]);
 
 <template>
   <ul class="list">
-    <li v-for="({ date, title, content }, index) of lists" :key="index">
-      <p>{{ date }}</p>
+    <li v-for="({ end_date, started_date, title, content }, index) of lists" :key="index">
+      <p>{{ started_date }} ~ {{ end_date }}</p>
       <p>{{ title }}</p>
       <p>{{ content }}</p>
     </li>

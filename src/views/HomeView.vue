@@ -2,31 +2,40 @@
 import HomeEmpty from "@/components/home/HomeEmpty.vue";
 import HomeList from "@/components/home/HomeList.vue";
 
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted } from "vue";
+import { supabase } from "@/lib/supabaseClient";
 
 const searchValue = ref("");
 const list = ref([]);
-
-const storageList = computed(() => JSON.parse(localStorage.getItem("list")));
+const errorValue = ref("");
 
 onMounted(() => {
-  list.value = storageList.value;
+  getLsit();
 });
 
-const onClickSearch = () => {
-  if (storageList.value) {
-    const filterList = storageList.value.filter((v) => v?.title.includes(searchValue.value));
-    list.value = filterList;
+const onClickSearch = async () => {
+  const { data, error } = await supabase.from("table").select("*").like("title", `%${searchValue.value}%`);
+
+  if (error) {
+    errorValue.value = error;
+  } else {
+    list.value = data;
   }
 
   searchValue.value = "";
 };
+
+async function getLsit() {
+  const { data } = await supabase.from("table").select();
+
+  list.value = data;
+}
 </script>
 
 <template>
   <div>
     <form class="form" @submit.prevent="onClickSearch">
-      <input v-model="searchValue" type="text" placeholder="검색어를 입력하세요" />
+      <input role="search" v-model="searchValue" type="text" placeholder="검색어를 입력하세요" />
       <button type="button" @click="onClickSearch">검색</button>
     </form>
 
